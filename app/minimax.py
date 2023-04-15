@@ -72,7 +72,7 @@ def heuristic2(grid, target, side, turn):
                 if k == target:
                     if all(grid[i + d][j + d] in ('X', '-') for d in range(k)):
                         cnt_x += 1
-                        print("possible,", i, j, k)
+                        #print("possible,", i, j, k)
 
                 if all(grid[i + d][j + d] in 'X' for d in range(k)):
                     max_x = max(max_x, k)
@@ -121,7 +121,7 @@ def heuristic2(grid, target, side, turn):
                 if k == target:
                     if all(grid[i + d][j] in ('X', '-') for d in range(k)):
                         cnt_x += 1
-                        print("possible,", i, k)
+                        #print("possible,", i, k)
 
                 if all(grid[i + d][j] in 'X' for d in range(k)):
                     max_x = max(max_x, k)
@@ -129,7 +129,7 @@ def heuristic2(grid, target, side, turn):
                 if k == target:
                     if all(grid[i + d][j] in ('O', '-') for d in range(k)):
                         cnt_o += 1
-                        print("possible,", i, j, k)
+                        #print("possible,", i, j, k)
 
                 if all(grid[i + d][j] in 'O' for d in range(k)):
                     max_o = max(max_o, k)
@@ -137,8 +137,8 @@ def heuristic2(grid, target, side, turn):
     if not any('-' in row for row in grid):
         return 0
 
-    print("cnt ", cnt_o, cnt_x)
-    print("max ", max_x, max_o)
+    #print("cnt ", cnt_o, cnt_x)
+    #print("max ", max_x, max_o)
 
     if cnt_o == 0 and cnt_x == 0:
         return 0
@@ -146,16 +146,29 @@ def heuristic2(grid, target, side, turn):
         # if cnt_o >= cnt_x:
         #     return -1
         # return 1
-        return (cnt_x - cnt_o) + (max_x -max_o)
+        #return (cnt_x - cnt_o) + (max_x -max_o)
+        return target - max_o
     # if cnt_x >= cnt_o:
     #     return -1
     # return 1
-    return (cnt_o - cnt_x) + (max_o - max_x)
+    #return (cnt_o - cnt_x) + (max_o - max_x)
+    if max_x == target:
+        return -10
+    return target - max_x
+
+
+cache = {}
 
 
 def minimax(board, cur_depth, depth_limit, is_max, mark, side, alpha, beta, target):
     score = heuristic2(board, target, side, 'X' if is_max == True else 'O')
-    if cur_depth >= depth_limit or score is not None:
+
+    key = tuple(tuple(row) for row in board)
+
+    if key in cache:
+        return cache[key]
+
+    if cur_depth >= depth_limit:
         return score
 
     moves = get_possible_moves(board)
@@ -170,6 +183,7 @@ def minimax(board, cur_depth, depth_limit, is_max, mark, side, alpha, beta, targ
             alpha = max(alpha, res)
             if beta <= alpha:
                 break
+        cache[key] = v
         return v
 
     v = float('inf')
@@ -181,17 +195,20 @@ def minimax(board, cur_depth, depth_limit, is_max, mark, side, alpha, beta, targ
         beta = min(beta, res)
         if beta <= alpha:
             break
+    cache[key] = v
     return v
 
 
 def find_best_move(grid, side, target):
     moves = get_possible_moves(grid)
     best_score = float('-inf')
+    depth = min(target // 2 + 1, 5)
     x, y = -1, -1
     for i, j in moves:
         grid[i][j] = side
-        score = minimax(grid, 0, 5, False, 'O' if side == 'X' else 'X', side, float('-inf'), float('+inf'), target)
+        score = minimax(grid, 0, depth, False, 'O' if side == 'X' else 'X', side, float('-inf'), float('+inf'), target)
         grid[i][j] = '-'
+        # print("i, j", i, j, score)
         if score > best_score:
             best_score = score
             x, y = i, j
