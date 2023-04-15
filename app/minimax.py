@@ -115,6 +115,11 @@ def human():
 
     while True:
         num1, num2 = map(int, input("Enter two space-separated integers: ").split())
+        
+        if b[num1][num2] != '-':
+            print("Invalid move")
+            continue
+        
         b[num1][num2] = 'X'
         print_board(b)
 
@@ -131,7 +136,7 @@ def computer():
     b = [['-'] * 3 for _ in range(3)]
 
     while True:
-        time.sleep(3)
+        # time.sleep(3)
         x, y = find_best_move(b, 'X')
         if x == -1:
             sys.exit(0)
