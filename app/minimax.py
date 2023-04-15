@@ -55,9 +55,107 @@ def heuristic(grid, target, side):
     return None
 
 
-def minimax(board, cur_depth, depth_limit, is_max, mark, side, alpha, beta):
-    score = heuristic(board, 3, side)
-    if score is not None:
+def heuristic2(grid, target, side, turn):
+    rows = len(grid)
+    cols = len(grid[0])
+
+    max_x = -1
+    max_o = -1
+
+    cnt_x = 0
+    cnt_o = 0
+
+    for k in range(target, 0, -1):  # optimize
+        for i in range(rows - k + 1):
+            for j in range(cols - k + 1):
+                #print(k)
+                if k == target:
+                    if all(grid[i + d][j + d] in ('X', '-') for d in range(k)):
+                        cnt_x += 1
+                        print("possible,", i, j, k)
+
+                if all(grid[i + d][j + d] in 'X' for d in range(k)):
+                    max_x = max(max_x, k)
+
+                if k == target:
+                    if all(grid[i + d][j + d] in ('O', '-') for d in range(k)):
+                        cnt_o += 1
+
+                if all(grid[i + d][j + d] in 'O' for d in range(k)):
+                    max_o = max(max_o, k)
+
+                if k == target:
+                    if all(grid[i + d][j + k - d - 1] in ('X', '-') for d in range(k)):
+                        cnt_x += 1
+
+                if all(grid[i + d][j + k - d - 1] in 'X' for d in range(k)):
+                    max_x = max(max_x, k)
+
+                if k == target:
+                    if all(grid[i + d][j + k - d - 1] in ('O', '-') for d in range(k)):
+                        cnt_o += 1
+
+                if all(grid[i + d][j + k - d - 1] in 'O' for d in range(k)):
+                    max_o = max(max_o, k)
+
+    for k in range(target, 0, -1):
+        for i in range(rows):
+            for j in range(cols - k + 1):
+                if k == target:
+                    if all(grid[i][j + d] in ('X', '-') for d in range(k)):
+                        cnt_x += 1
+
+                if all(grid[i][j + d] in 'X' for d in range(k)):
+                    max_x = max(max_x, k)
+
+                if k == target:
+                    if all(grid[i][j + d] in ('O', '-') for d in range(k)):
+                        cnt_o += 1
+
+                if all(grid[i][j + d] in 'O' for d in range(k)):
+                    max_o = max(max_o, k)
+
+    for k in range(target, 0, -1):
+        for i in range(rows - k + 1):
+            for j in range(cols):
+                if k == target:
+                    if all(grid[i + d][j] in ('X', '-') for d in range(k)):
+                        cnt_x += 1
+                        print("possible,", i, k)
+
+                if all(grid[i + d][j] in 'X' for d in range(k)):
+                    max_x = max(max_x, k)
+
+                if k == target:
+                    if all(grid[i + d][j] in ('O', '-') for d in range(k)):
+                        cnt_o += 1
+                        print("possible,", i, j, k)
+
+                if all(grid[i + d][j] in 'O' for d in range(k)):
+                    max_o = max(max_o, k)
+
+    if not any('-' in row for row in grid):
+        return 0
+
+    print("cnt ", cnt_o, cnt_x)
+    print("max ", max_x, max_o)
+
+    if cnt_o == 0 and cnt_x == 0:
+        return 0
+    if side == 'X':
+        # if cnt_o >= cnt_x:
+        #     return -1
+        # return 1
+        return (cnt_x - cnt_o) + (max_x -max_o)
+    # if cnt_x >= cnt_o:
+    #     return -1
+    # return 1
+    return (cnt_o - cnt_x) + (max_o - max_x)
+
+
+def minimax(board, cur_depth, depth_limit, is_max, mark, side, alpha, beta, target):
+    score = heuristic2(board, target, side, 'X' if is_max == True else 'O')
+    if cur_depth >= depth_limit or score is not None:
         return score
 
     moves = get_possible_moves(board)
@@ -67,7 +165,7 @@ def minimax(board, cur_depth, depth_limit, is_max, mark, side, alpha, beta):
         for i, j in moves:
             board_copy = get_board_copy(board)
             board_copy[i][j] = mark
-            res = minimax(board_copy, cur_depth + 1, depth_limit, False, 'X', side, alpha, beta)
+            res = minimax(board_copy, cur_depth + 1, depth_limit, False, 'X', side, alpha, beta, target)
             v = max(v, res)
             alpha = max(alpha, res)
             if beta <= alpha:
@@ -78,7 +176,7 @@ def minimax(board, cur_depth, depth_limit, is_max, mark, side, alpha, beta):
     for i, j in moves:
         board_copy = get_board_copy(board)
         board_copy[i][j] = mark
-        res = minimax(board_copy, cur_depth + 1, depth_limit, True, 'O', side, alpha, beta)
+        res = minimax(board_copy, cur_depth + 1, depth_limit, True, 'O', side, alpha, beta, target)
         v = min(v, res)
         beta = min(beta, res)
         if beta <= alpha:
@@ -86,13 +184,13 @@ def minimax(board, cur_depth, depth_limit, is_max, mark, side, alpha, beta):
     return v
 
 
-def find_best_move(grid, side):
+def find_best_move(grid, side, target):
     moves = get_possible_moves(grid)
     best_score = float('-inf')
     x, y = -1, -1
     for i, j in moves:
         grid[i][j] = side
-        score = minimax(grid, 0, 5, False, 'O' if side == 'X' else 'X', side, float('-inf'), float('+inf'))
+        score = minimax(grid, 0, 5, False, 'O' if side == 'X' else 'X', side, float('-inf'), float('+inf'), target)
         grid[i][j] = '-'
         if score > best_score:
             best_score = score
@@ -111,7 +209,9 @@ def print_board(grid):
 
 
 def human():
-    b = [['-'] * 3 for _ in range(3)]
+    board_size, target = map(int, input("Enter board_size and target: ").split())
+
+    b = [['-'] * board_size for _ in range(board_size)]
 
     while True:
         num1, num2 = map(int, input("Enter two space-separated integers: ").split())
@@ -120,7 +220,7 @@ def human():
 
         time.sleep(3)
 
-        x, y = find_best_move(b, 'O')
+        x, y = find_best_move(b, 'O', target)
         if x == -1:
             sys.exit(0)
         b[x][y] = 'O'
@@ -148,3 +248,29 @@ def computer():
 
 
 human()
+
+# b = [['X', 'O', 'O', '-', '-', '-'],
+#      ['X', '-', 'X', 'X', 'O', 'O'],
+#      ['-', '-', 'O', 'X', '-', '-'],
+#      ['-', 'O', 'X', 'X', '-', '-'],
+#      ['O', '-', '-', 'O', '-', '-'],
+#      ['X', 'O', '-', '-', '-', 'X']]
+
+#print(heuristic2(b, 5, 'O', 'X'))
+
+#b = [['-'] * 6 for _ in range(6)]
+#print(heuristic2(b, 6, 'X', 'X'))
+# b[3][3] = 'X'
+# b[0][0] = 'O'
+# print_board(b)
+# print(heuristic2(b, 6, 'O', 'X'))
+
+#
+# b[1][1] = b[2][2] = b[3][3] = 'X'
+#
+# b[2][0] = b[3][0] = b[4][0] = 'O'
+#
+# print_board(b)
+# print(heuristic2(b, 6, 'X'))
+
+
