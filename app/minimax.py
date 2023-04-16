@@ -15,7 +15,7 @@ def get_board_copy(grid):
     return [row[:] for row in grid]
 
 
-def heuristic_org(grid, target, side):
+def heuristic(grid, target, side):
     rows = len(grid)
     cols = len(grid[0])
 
@@ -54,7 +54,7 @@ def heuristic_org(grid, target, side):
 
     return None
 
-def heuristic(grid, target, side):
+def heuristic_meh(grid, target, side):
     n = len(grid)
     m = target
     opponent = 'O' if side == 'X' else 'X'
@@ -108,7 +108,7 @@ def heuristic(grid, target, side):
     return 0
 
 def minimax(board, cur_depth, depth_limit, is_max, mark, side, alpha, beta):
-    score = heuristic(board, 4, side)
+    score = heuristic(board, 3, side)
     if score is not None:
         return score
 
@@ -164,7 +164,7 @@ def print_board(grid):
 
 
 def human():
-    b = [['-'] * 5 for _ in range(5)]
+    b = [['-'] * 4 for _ in range(4)]
 
     while True:
         num1, num2 = map(int, input("Enter two space-separated integers: ").split())
@@ -176,7 +176,7 @@ def human():
         b[num1][num2] = 'X'
         print_board(b)
 
-        time.sleep(3)
+        # time.sleep(3)
 
         x, y = find_best_move(b, 'O')
         if x == -1:
@@ -186,7 +186,7 @@ def human():
 
 
 def computer():
-    b = [['-'] * 5 for _ in range(5)]
+    b = [['-'] * 4 for _ in range(4)]
 
     while True:
         # time.sleep(3)
