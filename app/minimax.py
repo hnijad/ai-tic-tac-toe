@@ -15,7 +15,7 @@ def get_board_copy(grid):
     return [row[:] for row in grid]
 
 
-def heuristic(grid, target, side):
+def heuristic_org(grid, target, side):
     rows = len(grid)
     cols = len(grid[0])
 
@@ -54,9 +54,61 @@ def heuristic(grid, target, side):
 
     return None
 
+def heuristic(grid, target, side):
+    n = len(grid)
+    m = target
+    opponent = 'O' if side == 'X' else 'X'
+    # Calculate the number of lines of length m that each player has open
+    num_lines = {side: 0, opponent: 0}
+    
+    for i in range(n):
+        for j in range(n):
+            # Check rows
+            if j <= n - m:
+                side_score_row = [grid[i][j+k] == side for k in range(m)]
+                if sum(side_score_row) == m:
+                    return 10
+                
+                opponent_score_row = [grid[i][j+k] == opponent for k in range(m)]
+                if sum(opponent_score_row) == m:
+                    return -10
+                    
+            # Check columns
+            if i <= n - m:
+                side_score_col = [grid[i+k][j] == side for k in range(m)]
+                if sum(side_score_col) == m:
+                    return 10
+                
+                opponent_score_col = [grid[i+k][j] == opponent for k in range(m)]
+                if sum(opponent_score_col) == m:
+                    return -10
+                    
+            # Check diagonal (top-left to bottom-right)
+            if i <= n - m and j <= n - m:
+                side_score_diag_tl_br = [grid[i+k][j+k] == side for k in range(m)]
+                if sum(side_score_diag_tl_br) == m:
+                    return 10
+                
+                opponent_score_diag_tl_br = [grid[i+k][j+k] == opponent for k in range(m)]
+                if sum(opponent_score_diag_tl_br) == m:
+                    return -10
+                    
+            # Check diagonal (bottom-left to top-right)
+            if i >= m-1 and j <= n - m:
+                side_score_diag_bl_tr = [grid[i-k][j+k] == side for k in range(m)]
+                if sum(side_score_diag_bl_tr) == m:
+                    return 10
+                
+                opponent_score_diag_bl_tr = [grid[i-k][j+k] == opponent for k in range(m)]
+                if sum(opponent_score_diag_bl_tr) == m:
+                    return -10
+
+    # Calculate the heuristic value based on the number of open lines
+
+    return 0
 
 def minimax(board, cur_depth, depth_limit, is_max, mark, side, alpha, beta):
-    score = heuristic(board, 3, side)
+    score = heuristic(board, 4, side)
     if score is not None:
         return score
 
@@ -86,6 +138,7 @@ def minimax(board, cur_depth, depth_limit, is_max, mark, side, alpha, beta):
     return v
 
 
+
 def find_best_move(grid, side):
     moves = get_possible_moves(grid)
     best_score = float('-inf')
@@ -111,7 +164,7 @@ def print_board(grid):
 
 
 def human():
-    b = [['-'] * 3 for _ in range(3)]
+    b = [['-'] * 5 for _ in range(5)]
 
     while True:
         num1, num2 = map(int, input("Enter two space-separated integers: ").split())
@@ -133,7 +186,7 @@ def human():
 
 
 def computer():
-    b = [['-'] * 3 for _ in range(3)]
+    b = [['-'] * 5 for _ in range(5)]
 
     while True:
         # time.sleep(3)
