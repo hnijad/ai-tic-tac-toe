@@ -1,4 +1,5 @@
 import copy
+import time
 import numpy as np
 from typing import List, Tuple
 
@@ -69,8 +70,6 @@ class Bot:
     """
     Bot class that implements the minimax algorithm.
     Here, the bot is the minimizer and the player is the maximizer.
-    
-    
     """
     def __init__(self, level: int=1, bot_mark: str='O') -> None:
         self.level = level
@@ -87,17 +86,14 @@ class Bot:
         
         # bot wins              
         if board.check_win(self.bot_mark):
-            print(">>> Bot wins <<<")
             return -1, None # eval, move
         
         # player wins
         if board.check_win(opponent):
-            print(">>> Player wins <<<")
             return 1, None # eval, move
         
         # draw 
         if board.is_board_full():
-            print(">>> Draw <<<")
             return 0, None # eval, move
         
         if is_maximizing:
@@ -142,16 +138,19 @@ class Bot:
         
         else:
             # make a move based on the heuristic and minimax algorithm
+            start = time.time()
             score, move = self.minimax(board, 0, True)
-        
+            print(f"Bot took {time.time() - start} seconds to make a move")
+
         print(f"Bot's move: {move} with score {score}")
         
-        return move
+        
+        return score, move
     
     
 def main():
     
-    board = Board(3, 3)
+    board = Board(5, 3)
     # grid = board.squares
     board.print_board()
     bot = Bot(1, 'O')
@@ -168,7 +167,7 @@ def main():
 
         print(">>> Bot's turn: ")
         
-        next_move = bot.eval(board)
+        score, next_move = bot.eval(board)
         
         if next_move:
             x, y = next_move
@@ -176,8 +175,12 @@ def main():
             board.mark_square(x, y, 'O')
             board.print_board()
         else:
-            print(">>> Game has ended <<<")
-    
+            if score == 0:
+                print(">>> Game is a draw <<<")
+            elif score == 1:
+                print(">>> Player wins <<<")
+            elif score == -1:
+                print(">>> Bot wins <<<")    
 if __name__ == '__main__':
     main()
     
