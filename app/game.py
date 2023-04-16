@@ -13,3 +13,39 @@ class Board:
         self.board[row][col] = player
         # self.empty_squares[row][col] = '-'
         self.marked_squares += 1
+    
+    def check_win(self, player):
+        # Check rows
+        n = self.size
+        m = self.target
+        grid = self.board
+        
+        for i in range(n):
+            for j in range(n):
+                # Check rows
+                if j <= n - m:
+                    player_score_row = [grid[i][j+k] == player for k in range(m)]
+                    if sum(player_score_row) == m:
+                        return True
+                        
+                # Check columns
+                if i <= n - m:
+                    player_score_col = [grid[i+k][j] == player for k in range(m)]
+                    if sum(player_score_col) == m:
+                        return True
+                        
+                # Check diagonal (top-left to bottom-right)
+                if i <= n - m and j <= n - m:
+                    player_score_diag_tl_br = [grid[i+k][j+k] == player for k in range(m)]
+                    if sum(player_score_diag_tl_br) == m:
+                        return True
+                        
+                # Check diagonal (bottom-left to top-right)
+                if i >= m-1 and j <= n - m:
+                    player_score_diag_bl_tr = [grid[i-k][j+k] == player for k in range(m)]
+                    if sum(player_score_diag_bl_tr) == m:
+                        return True
+                    
+        return False
+    
+    
