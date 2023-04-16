@@ -60,4 +60,31 @@ class Board:
     def is_board_empty(self):
         return self.marked_squares == 0
     
- 
+    
+class Bot:
+    
+    def __init__(self, level=0, player=1) -> None:
+        self.level = level
+        self.player = player
+    
+    def random_move(self, board) -> Tuple[int, int]:
+        empty_squares = board.get_empty_squares()
+        random_square = empty_squares[np.random.randint(len(empty_squares))]
+        return random_square
+    
+    def eval(self, board):
+        if self.level == 0:
+            # make a random move
+            move = self.random_move(board)
+        
+        else:
+            # make a move based on the heuristic and minimax algorithm
+            pass
+        
+        return move
+    
+    
+def main():
+    
+    board = Board(3, 3)
+    bot = Bot(0, 1)
