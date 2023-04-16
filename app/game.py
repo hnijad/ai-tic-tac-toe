@@ -87,14 +87,17 @@ class Bot:
         
         # bot wins              
         if board.check_win(self.bot_mark):
+            print(">>> Bot wins <<<")
             return -1, None # eval, move
         
         # player wins
         if board.check_win(opponent):
+            print(">>> Player wins <<<")
             return 1, None # eval, move
         
         # draw 
         if board.is_board_full():
+            print(">>> Draw <<<")
             return 0, None # eval, move
         
         if is_maximizing:
@@ -151,7 +154,7 @@ def main():
     board = Board(3, 3)
     # grid = board.squares
     board.print_board()
-    bot = Bot(0, 'O')
+    bot = Bot(1, 'O')
     
     while True:
         num1, num2 = map(int, input("Enter two space-separated integers: ").split())
@@ -164,15 +167,16 @@ def main():
         board.print_board()
 
         print(">>> Bot's turn: ")
-
-        x, y = bot.eval(board)
-        # if x == -1:
-        #     sys.exit(0)
         
-        board.mark_square(x, y, 'O')
-        board.print_board()
-    
-    row_id, col_id = bot.eval(board)
+        next_move = bot.eval(board)
+        
+        if next_move:
+            x, y = next_move
+        
+            board.mark_square(x, y, 'O')
+            board.print_board()
+        else:
+            print(">>> Game has ended <<<")
     
 if __name__ == '__main__':
     main()
