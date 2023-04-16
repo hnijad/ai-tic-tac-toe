@@ -48,4 +48,16 @@ class Board:
                     
         return False
     
+    def get_empty_squares(self):    
+        return np.argwhere(self.board == '-')
+        
+    def is_empty_square(self, row, col):
+        return self.board[row][col] == '-'
     
+    def is_board_full(self):
+        return self.marked_squares == self.size**2
+    
+    def is_board_empty(self):
+        return self.marked_squares == 0
+    
+ 
