@@ -90,18 +90,18 @@ class Bot:
 def main():
     
     board = Board(3, 3)
-    grid = board.squares
+    # grid = board.squares
     board.print_board()
     bot = Bot(0, 'O')
     
     while True:
         num1, num2 = map(int, input("Enter two space-separated integers: ").split())
         
-        if grid[num1][num2] != '-':
+        if not board.is_empty_square(num1, num2):
             print("Invalid move")
             continue
         
-        grid[num1][num2] = 'X'
+        board.mark_square(num1, num2, 'X')
         board.print_board()
 
         print(">>> Bot's turn: ")
@@ -110,7 +110,7 @@ def main():
         # if x == -1:
         #     sys.exit(0)
         
-        grid[x][y] = 'O'
+        board.mark_square(x, y, 'O')
         board.print_board()
     
     row_id, col_id = bot.eval(board)
