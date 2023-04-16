@@ -5,8 +5,8 @@ class Board:
     def __init__(self, size, target) -> None:
         self.size = size
         self.target = target
-        self.board = np.array([['-' for _ in range(size)] for _ in range(size)])
-        self.empty_squares = self.board
+        self.squares = np.array([['-' for _ in range(size)] for _ in range(size)])
+        self.empty_squares = self.squares
         self.marked_squares = 0
         
     def mark_square(self, row, col, player):
@@ -18,7 +18,7 @@ class Board:
         # Check rows
         n = self.size
         m = self.target
-        grid = self.board
+        grid = self.squares
         
         for i in range(n):
             for j in range(n):
@@ -49,21 +49,24 @@ class Board:
         return False
     
     def get_empty_squares(self):    
-        return np.argwhere(self.board == '-')
+        return np.argwhere(self.squares == '-')
         
     def is_empty_square(self, row, col):
-        return self.board[row][col] == '-'
+        return self.squares[row][col] == '-'
     
     def is_board_full(self):
         return self.marked_squares == self.size**2
     
     def is_board_empty(self):
         return self.marked_squares == 0
-    
-    
+        
+    def print_board(self):
+        for row in self.squares:
+            print(row)
+            
 class Bot:
     
-    def __init__(self, level=0, player=1) -> None:
+    def __init__(self, level: int=0, player: str='O') -> None:
         self.level = level
         self.player = player
     
@@ -87,4 +90,31 @@ class Bot:
 def main():
     
     board = Board(3, 3)
-    bot = Bot(0, 1)
+    grid = board.squares
+    board.print_board()
+    bot = Bot(0, 'O')
+    
+    while True:
+        num1, num2 = map(int, input("Enter two space-separated integers: ").split())
+        
+        if grid[num1][num2] != '-':
+            print("Invalid move")
+            continue
+        
+        grid[num1][num2] = 'X'
+        board.print_board()
+
+        print(">>> Bot's turn: ")
+
+        x, y = bot.eval(board)
+        # if x == -1:
+        #     sys.exit(0)
+        
+        grid[x][y] = 'O'
+        board.print_board()
+    
+    row_id, col_id = bot.eval(board)
+    
+if __name__ == '__main__':
+    main()
+    
