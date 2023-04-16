@@ -9,8 +9,8 @@ class Board:
         self.empty_squares = self.squares
         self.marked_squares = 0
         
-    def mark_square(self, row, col, player):
-        self.board[row][col] = player
+    def mark_square(self, row, col, player_mark):
+        self.squares[row][col] = player_mark
         # self.empty_squares[row][col] = '-'
         self.marked_squares += 1
     
