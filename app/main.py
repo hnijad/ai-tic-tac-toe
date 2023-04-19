@@ -7,42 +7,6 @@ from model.board import Board
 from minimax import find_best_move
 
 
-def count_moves(grid):
-    count = 0
-    for row in grid:
-        for char in row:
-            if char != '-':
-                count += 1
-    return count
-
-
-def find_move(grid):
-    for i in range(len(grid)):
-        for j in range(len(grid[i])):
-            if grid[i][j] == '-':
-                return i, j
-
-    return -1, -1
-
-
-def print_board(grid):
-    for row in grid:
-        print(row, end='\n')
-
-
-def sync_board(grid, server_board_string):
-    rows = server_board_string.strip().split('\n')
-    server_board = [[c for c in row] for row in rows]
-    change = False
-    for i in range(len(grid)):
-        for j in range(len(grid[i])):
-            if grid[i][j] != server_board[i][j]:
-                change = True
-                grid[i][j] = server_board[i][j]
-
-    return change
-
-
 if __name__ == '__main__':
     user_id = get_general_config('user_id')
     api_key = get_general_config('api_key')
