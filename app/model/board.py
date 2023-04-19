@@ -148,10 +148,10 @@ class Board:
         return tuple(tuple(row) for row in self.state)
 
     def get_mark(self):
-        return 'X' if self.turn == 1 else 'O'
+        return 'X' if self.turn == 2 else 'O'
 
     def get_opponent_mark(self):
-        return 'O' if self.turn == 1 else 'X'
+        return 'O' if self.turn == 2 else 'X'
 
     def get_depth(self):
         if self.size <= 3:
