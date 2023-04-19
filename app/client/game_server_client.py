@@ -3,12 +3,12 @@ from requests.adapters import HTTPAdapter, Retry
 
 
 class GameServerClient:
-    def __init__(self):
+    def __init__(self, user_id, api_key):
         self.session = requests.Session()
         self.session.headers = {
-            'userid': '1180',
+            'userid': str(user_id),
             'Content-Type': 'application/x-www-form-urlencoded',
-            'x-api-key': '<api_key>',
+            'x-api-key': api_key,
             'User-Agent': 'Python 3.9'
         }
         retries = Retry(total=5, backoff_factor=1, status_forcelist=[500, 502, 503, 504])
