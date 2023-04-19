@@ -35,12 +35,12 @@ To run this program as an agent, we need to configure following parameters in ``
 It accepts the following command line argument(s) <br>
 
 ## Implementation
-```app/client/game_server_client.py``` class is responsible for making the api calls to server.
-```app/model/board.py``` class represents board in tic-tac-toe and provided some utility functions to use in game such
-as making move, syncing state from with server board string etc.
-```app/config.py``` is responsible for parsing the config values from  ```app/config.ini``` and command line.
-```app/minimax.py``` implements standard minimax algorithm with alpha beta pruning.
-and Finally main.py is driver of the whole program.
+```app/client/game_server_client.py``` class is responsible for making the api calls to server. <br>
+```app/model/board.py``` class represents board in tic-tac-toe and provides some utility functions to use in game such
+as making move, syncing state from with server board string etc. <br>
+```app/config.py``` is responsible for parsing the config values from  ```app/config.ini``` and command line. <br>
+```app/minimax.py``` implements standard minimax algorithm with alpha beta pruning. <br>
+and finally main.py is driver of the whole program.
 
 
 ## Dependencies
