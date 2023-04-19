@@ -15,6 +15,13 @@ To build and run application execute the following commands.
 python app/main.py -team_id=1348 -turn=2
 ```
 
+To run the unit test cases, run the following command.
+
+```shell
+python -m unittest tests/test_board.py
+```
+
+
 ## Usage
 It accepts the following command line argument(s) <br>
 <li> Team Id it plays</li>
