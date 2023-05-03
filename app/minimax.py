@@ -90,3 +90,5 @@ def computer():
     #     print_board(b)
 
 
+if __name__ == '__main__':
+    human()
