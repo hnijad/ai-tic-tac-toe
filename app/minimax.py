@@ -53,8 +53,6 @@ def find_best_move(board: Board, side):
         if score > best_score:
             best_score = score
             x, y = i, j
-            
-    print("Best score:", best_score)
     return x, y
 
 
