@@ -209,10 +209,10 @@ class Board:
         if self.size <= 3:
             return 9
         if self.size <= 5:
-            return 3
+            return 6
         if self.size <= 6:
-            return 3
-        return 1
+            return 4
+        return 3
 
     def sync_state(self, server_board_string):
         rows = server_board_string.strip().split('\n')
