@@ -107,8 +107,8 @@ def heuristic_meh(grid, target, side):
 
     return 0
 
-def minimax(board, cur_depth, depth_limit, is_max, mark, side, alpha, beta):
-    score = heuristic(board, 3, side)
+def minimax(board, target, cur_depth, depth_limit, is_max, mark, side, alpha, beta):
+    score = heuristic(board, target, side)
     if score is not None:
         return score
 
@@ -119,7 +119,7 @@ def minimax(board, cur_depth, depth_limit, is_max, mark, side, alpha, beta):
         for i, j in moves:
             board_copy = get_board_copy(board)
             board_copy[i][j] = mark
-            res = minimax(board_copy, cur_depth + 1, depth_limit, False, 'X', side, alpha, beta)
+            res = minimax(board_copy, target, cur_depth + 1, depth_limit, False, 'X', side, alpha, beta)
             v = max(v, res)
             alpha = max(alpha, res)
             if beta <= alpha:
@@ -130,7 +130,7 @@ def minimax(board, cur_depth, depth_limit, is_max, mark, side, alpha, beta):
     for i, j in moves:
         board_copy = get_board_copy(board)
         board_copy[i][j] = mark
-        res = minimax(board_copy, cur_depth + 1, depth_limit, True, 'O', side, alpha, beta)
+        res = minimax(board_copy, target, cur_depth + 1, depth_limit, True, 'O', side, alpha, beta)
         v = min(v, res)
         beta = min(beta, res)
         if beta <= alpha:
@@ -139,13 +139,13 @@ def minimax(board, cur_depth, depth_limit, is_max, mark, side, alpha, beta):
 
 
 
-def find_best_move(grid, side):
+def find_best_move(grid, target, side):
     moves = get_possible_moves(grid)
     best_score = float('-inf')
     x, y = -1, -1
     for i, j in moves:
         grid[i][j] = side
-        score = minimax(grid, 0, 5, False, 'O' if side == 'X' else 'X', side, float('-inf'), float('+inf'))
+        score = minimax(grid, target, 0, 5, False, 'O' if side == 'X' else 'X', side, float('-inf'), float('+inf'))
         grid[i][j] = '-'
         if score > best_score:
             best_score = score
@@ -164,7 +164,10 @@ def print_board(grid):
 
 
 def human():
-    b = [['-'] * 4 for _ in range(4)]
+    
+    board_size, target = map(int, input("Enter board_size and target: ").split())
+
+    b = [['-'] * board_size for _ in range(board_size)]
 
     while True:
         num1, num2 = map(int, input("Enter two space-separated integers: ").split())
@@ -178,29 +181,9 @@ def human():
 
         # time.sleep(3)
 
-        x, y = find_best_move(b, 'O')
+        x, y = find_best_move(b, target, 'O')
         if x == -1:
             sys.exit(0)
-        b[x][y] = 'O'
-        print_board(b)
-
-
-def computer():
-    b = [['-'] * 4 for _ in range(4)]
-
-    while True:
-        # time.sleep(3)
-        x, y = find_best_move(b, 'X')
-        if x == -1:
-            sys.exit(0)
-        b[x][y] = 'X'
-        print_board(b)
-
-        time.sleep(3)
-
-        # num1, num2 = map(int, input("Enter two space-separated integers: ").split())
-        x, y = find_best_move(b, 'O')
-
         b[x][y] = 'O'
         print_board(b)
 
