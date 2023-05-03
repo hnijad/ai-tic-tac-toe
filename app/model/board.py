@@ -88,6 +88,9 @@ class Board:
                         if count_side == m:
                             return 1000 - depth
                         
+                        if count_side == m-1:
+                            player_num_empty_seq += 5
+                        
                         if next_seq.count('-') == m-1:
                             player_num_empty_seq += 1
                             
@@ -97,6 +100,9 @@ class Board:
                         
                         if opponent_count == m:
                             return -1000 + depth
+                        
+                        if opponent_count == m-1:
+                            opponent_count += 5
                         
                         if next_seq.count('-') == m-1:
                             opponent_num_empty_seq += 1
@@ -125,6 +131,9 @@ class Board:
                         if count_side == m:
                             return 1000 - depth
                         
+                        if count_side == m-1:
+                            player_num_empty_seq += 5
+                        
                         if next_seq.count('-') == m-1:
                             player_num_empty_seq += 1
                     
@@ -135,6 +144,9 @@ class Board:
                         if opponent_count == m:
                             return -1000 + depth
                         
+                        if opponent_count == m-1:
+                            opponent_count += 5
+                            
                         if next_seq.count('-') == m-1:
                             opponent_num_empty_seq += 1
                     
@@ -172,7 +184,9 @@ class Board:
                         # check if player wins
                         if count_side == m:
                             return 1000 - depth
-                        
+                        if count_side == m-1:
+                            player_seq_score += 5
+                            
                         if next_seq.count('-') == m-1:
                             player_num_empty_seq += 1
                             
@@ -182,6 +196,9 @@ class Board:
                         
                         if opponent_count == m:
                             return -1000 + depth
+                        
+                        if opponent_count == m-1:
+                            opponent_seq_score += 5
                         
                         if next_seq.count('-') == m-1:
                             opponent_num_empty_seq += 1
@@ -221,6 +238,9 @@ class Board:
                         if count_side == m:
                             return 1000 - depth
                         
+                        if count_side == m-1:
+                            player_seq_score += 5
+                        
                         if next_seq.count('-') == m-1:
                             player_num_empty_seq += 1
                             
@@ -230,6 +250,9 @@ class Board:
                         
                         if opponent_count == m:
                             return -1000 + depth
+                        
+                        if opponent_count == m-1:
+                            opponent_seq_score += 5
                         
                         if next_seq.count('-') == m-1:
                             opponent_num_empty_seq += 1
@@ -257,7 +280,7 @@ class Board:
                 #                 opponent_num_empty_seq += 1
                             
         # print(f"player_seq_score: {player_seq_score}, opponent_seq_score: {opponent_seq_score}")
-        return 2*(player_seq_score - opponent_seq_score) + (player_num_empty_seq - opponent_num_empty_seq)
+        return 5*(player_seq_score - opponent_seq_score) + (player_num_empty_seq - opponent_num_empty_seq)
         
 
     def evaluate(self):
