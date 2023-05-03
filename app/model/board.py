@@ -59,8 +59,8 @@ class Board:
         return board_str
 
 
-    def evaluate_new(self):
-        side = self.get_mark()
+    def evaluate_new(self, depth, mark):
+        side = mark
         opponent = 'X' if side == 'O' else 'O'
         n = self.size
         m = self.target
@@ -72,43 +72,43 @@ class Board:
                 if j <= n - m:
                     side_score_row = [grid[i][j+k] == side for k in range(m)]
                     if sum(side_score_row) == m:
-                        return 10
+                        return 10 - depth
                     
                     opponent_score_row = [grid[i][j+k] == opponent for k in range(m)]
                     if sum(opponent_score_row) == m:
-                        return -10
+                        return -10 + depth
                         
                 # Check columns
                 if i <= n - m:
                     side_score_col = [grid[i+k][j] == side for k in range(m)]
                     if sum(side_score_col) == m:
-                        return 10
+                        return 10 - depth
                     
                     opponent_score_col = [grid[i+k][j] == opponent for k in range(m)]
                     if sum(opponent_score_col) == m:
-                        return -10
+                        return -10 + depth
                         
                 # Check diagonal (top-left to bottom-right)
                 if i <= n - m and j <= n - m:
                     side_score_diag_tl_br = [grid[i+k][j+k] == side for k in range(m)]
                     if sum(side_score_diag_tl_br) == m:
-                        return 10
+                        return 10 - depth
                     
                     opponent_score_diag_tl_br = [grid[i+k][j+k] == opponent for k in range(m)]
                     if sum(opponent_score_diag_tl_br) == m:
-                        return -10
+                        return -10 + depth
                         
                 # Check diagonal (bottom-left to top-right)
                 if i >= m-1 and j <= n - m:
                     side_score_diag_bl_tr = [grid[i-k][j+k] == side for k in range(m)]
                     if sum(side_score_diag_bl_tr) == m:
-                        return 10
+                        return 10 - depth
                     
                     opponent_score_diag_bl_tr = [grid[i-k][j+k] == opponent for k in range(m)]
                     if sum(opponent_score_diag_bl_tr) == m:
-                        return -10
+                        return -10 + depth
 
-        return 0
+        return None
 
     def evaluate(self):
         max_x, max_o = -1, -1
