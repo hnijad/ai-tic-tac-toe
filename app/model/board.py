@@ -66,8 +66,13 @@ class Board:
         m = self.target
         grid = self.state
         
+        player_num_empty_seq = 0
+        opponent_num_empty_seq = 0
+        
         for i in range(n):
             for j in range(n):
+                                    
+                
                 # Check rows
                 if j <= n - m:
                     side_score_row = [grid[i][j+k] == side for k in range(m)]
@@ -77,6 +82,14 @@ class Board:
                     opponent_score_row = [grid[i][j+k] == opponent for k in range(m)]
                     if sum(opponent_score_row) == m:
                         return -10 + depth
+                    
+                    # Check the number of empty target length sequences
+                    empty_seq = [grid[i][j+k] == '-' for k in range(m)]
+                    if sum(empty_seq) == m-1:
+                        if grid[i][j] == side:
+                            player_num_empty_seq += 1
+                        elif grid[i][j] == opponent:
+                            opponent_num_empty_seq += 1
                         
                 # Check columns
                 if i <= n - m:
@@ -87,6 +100,13 @@ class Board:
                     opponent_score_col = [grid[i+k][j] == opponent for k in range(m)]
                     if sum(opponent_score_col) == m:
                         return -10 + depth
+                    
+                    empty_seq = [grid[i+k][j] == '-' for k in range(m)]
+                    if sum(empty_seq) == m-1:
+                        if grid[i][j] == side:
+                            player_num_empty_seq += 1
+                        elif grid[i][j] == opponent:
+                            opponent_num_empty_seq += 1
                         
                 # Check diagonal (top-left to bottom-right)
                 if i <= n - m and j <= n - m:
@@ -97,6 +117,13 @@ class Board:
                     opponent_score_diag_tl_br = [grid[i+k][j+k] == opponent for k in range(m)]
                     if sum(opponent_score_diag_tl_br) == m:
                         return -10 + depth
+                    
+                    empty_seq = [grid[i+k][j+k] == '-' for k in range(m)]
+                    if sum(empty_seq) == m-1:
+                        if grid[i][j] == side:
+                            player_num_empty_seq += 1
+                        elif grid[i][j] == opponent:
+                            opponent_num_empty_seq += 1
                         
                 # Check diagonal (bottom-left to top-right)
                 if i >= m-1 and j <= n - m:
@@ -108,7 +135,15 @@ class Board:
                     if sum(opponent_score_diag_bl_tr) == m:
                         return -10 + depth
 
-        return None
+                    empty_seq = [grid[i-k][j+k] == '-' for k in range(m)]
+                    if sum(empty_seq) == m-1:
+                        if grid[i][j] == side:
+                            player_num_empty_seq += 1
+                        elif grid[i][j] == opponent:
+                            opponent_num_empty_seq += 1
+                            
+        return player_num_empty_seq - opponent_num_empty_seq
+        
 
     def evaluate(self):
         max_x, max_o = -1, -1
@@ -209,9 +244,9 @@ class Board:
         if self.size <= 3:
             return 9
         if self.size <= 5:
-            return 6
-        if self.size <= 6:
             return 4
+        if self.size <= 6:
+            return 3
         return 3
 
     def sync_state(self, server_board_string):

@@ -4,13 +4,13 @@ from model.board import Board
 
 
 def minimax(board: Board, cur_depth, depth_limit, is_max, mark, alpha, beta):
-    score = board.evaluate_new(cur_depth, mark)
-    if score is not None:
-        # print("Score:", score)
-        return score
+    # score = board.evaluate_new(cur_depth, mark)
+    # if score is not None:
+    #     # print("Score:", score)
+    #     return score
     
-    elif cur_depth >= depth_limit:
-        return 0
+    if cur_depth >= depth_limit or board.is_game_finished():
+        return board.evaluate_new(cur_depth, mark)
     
     # print("Depth:", cur_depth)
     moves = board.get_possible_moves()
