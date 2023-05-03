@@ -4,8 +4,9 @@ from model.board import Board
 
 
 def minimax(board: Board, cur_depth, depth_limit, is_max, mark, alpha, beta):
-    if cur_depth >= depth_limit or board.is_game_finished():
-        return board.evaluate()
+    if cur_depth <= depth_limit or not board.is_game_finished():
+        return board.evaluate_new()
+    
     moves = board.get_possible_moves()
     if is_max:
         v = float('-inf')
