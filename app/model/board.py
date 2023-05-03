@@ -58,6 +58,58 @@ class Board:
             board_str += "|".join(row) + "\n"
         return board_str
 
+
+    def evaluate_new(self):
+        side = self.get_mark()
+        opponent = 'X' if side == 'O' else 'O'
+        n = self.size
+        m = self.target
+        grid = self.state
+        
+        for i in range(n):
+            for j in range(n):
+                # Check rows
+                if j <= n - m:
+                    side_score_row = [grid[i][j+k] == side for k in range(m)]
+                    if sum(side_score_row) == m:
+                        return 10
+                    
+                    opponent_score_row = [grid[i][j+k] == opponent for k in range(m)]
+                    if sum(opponent_score_row) == m:
+                        return -10
+                        
+                # Check columns
+                if i <= n - m:
+                    side_score_col = [grid[i+k][j] == side for k in range(m)]
+                    if sum(side_score_col) == m:
+                        return 10
+                    
+                    opponent_score_col = [grid[i+k][j] == opponent for k in range(m)]
+                    if sum(opponent_score_col) == m:
+                        return -10
+                        
+                # Check diagonal (top-left to bottom-right)
+                if i <= n - m and j <= n - m:
+                    side_score_diag_tl_br = [grid[i+k][j+k] == side for k in range(m)]
+                    if sum(side_score_diag_tl_br) == m:
+                        return 10
+                    
+                    opponent_score_diag_tl_br = [grid[i+k][j+k] == opponent for k in range(m)]
+                    if sum(opponent_score_diag_tl_br) == m:
+                        return -10
+                        
+                # Check diagonal (bottom-left to top-right)
+                if i >= m-1 and j <= n - m:
+                    side_score_diag_bl_tr = [grid[i-k][j+k] == side for k in range(m)]
+                    if sum(side_score_diag_bl_tr) == m:
+                        return 10
+                    
+                    opponent_score_diag_bl_tr = [grid[i-k][j+k] == opponent for k in range(m)]
+                    if sum(opponent_score_diag_bl_tr) == m:
+                        return -10
+
+        return 0
+
     def evaluate(self):
         max_x, max_o = -1, -1
         cnt_x, cnt_o = 0, 0
