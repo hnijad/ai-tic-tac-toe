@@ -383,9 +383,9 @@ class Board:
         if self.size <= 3:
             return 9
         if self.size <= 5:
-            return 5
-        if self.size <= 6:
             return 4
+        if self.size <= 6:
+            return 3
         return 3
 
     def sync_state(self, server_board_string):
