@@ -43,18 +43,18 @@ def minimax(board: Board, cur_depth, depth_limit, is_max, mark, alpha, beta):
 
 def find_best_move(board: Board, side):
     
-    # seq = [board.state[i][j] for i in range(board.size) for j in range(board.size)]
-    # num_empty = seq.count("-")
-    # print("Number of empty cells:", num_empty)
-    # if num_empty == board.size ** 2 - 1:
+    seq = [board.state[i][j] for i in range(board.size) for j in range(board.size)]
+    num_empty = seq.count("-")
+    print("Number of empty cells:", num_empty)
+    if num_empty == board.size ** 2 - 1:
         
-    #     x, y = board.size // 2, board.size // 2
-    #     if board.state[x][y] == "-":
-    #         print(f"score: 0 | move: ({x}, {y})")
-    #         return x, y
-    #     else:
-    #         print(f"score: 0 | move: ({x}, {y+1})")
-    #         return x, y+1
+        x, y = board.size // 2, board.size // 2
+        if board.state[x][y] == "-":
+            print(f"score: 0 | move: ({x}, {y})")
+            return x, y
+        else:
+            print(f"score: 0 | move: ({x}, {y+1})")
+            return x, y+1
     
     moves = board.get_possible_moves()
     best_score = float('-inf')
