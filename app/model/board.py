@@ -71,6 +71,10 @@ class Board:
         player_seq_score = 0
         opponent_seq_score = 0
         
+        win_score_player = 0
+        win_score_opponent = 0
+        win_score = 1000
+        
         for i in range(n):
             for j in range(n):
                                     
@@ -87,8 +91,8 @@ class Board:
                         
                         # check if player wins
                         if count_side == m:
-                            return 1000 - depth
-                        
+                            win_score_player += win_score - depth
+                            
                         if count_side == m-1:
                             player_num_empty_seq += 5
                         
@@ -100,7 +104,7 @@ class Board:
                         opponent_seq_score += opponent_count
                         
                         if opponent_count == m:
-                            return -1000 + depth
+                            win_score_opponent += -win_score + depth
                         
                         if opponent_count == m-1:
                             opponent_count += 5
@@ -130,7 +134,7 @@ class Board:
                         
                         # check if player wins
                         if count_side == m:
-                            return 1000 - depth
+                            win_score_player += win_score - depth
                         
                         if count_side == m-1:
                             player_num_empty_seq += 5
@@ -143,7 +147,7 @@ class Board:
                         opponent_seq_score += opponent_count
                         
                         if opponent_count == m:
-                            return -1000 + depth
+                            win_score_opponent += -win_score + depth
                         
                         if opponent_count == m-1:
                             opponent_count += 5
@@ -184,7 +188,7 @@ class Board:
                         
                         # check if player wins
                         if count_side == m:
-                            return 1000 - depth
+                            win_score_player += win_score - depth
                         if count_side == m-1:
                             player_seq_score += 5
                             
@@ -196,7 +200,7 @@ class Board:
                         opponent_seq_score += opponent_count
                         
                         if opponent_count == m:
-                            return -1000 + depth
+                            win_score_opponent += -win_score + depth
                         
                         if opponent_count == m-1:
                             opponent_seq_score += 5
@@ -237,7 +241,7 @@ class Board:
                         
                         # check if player wins
                         if count_side == m:
-                            return 1000 - depth
+                            win_score_player += win_score - depth
                         
                         if count_side == m-1:
                             player_seq_score += 5
@@ -250,7 +254,7 @@ class Board:
                         opponent_seq_score += opponent_count
                         
                         if opponent_count == m:
-                            return -1000 + depth
+                            win_score_opponent += -win_score + depth
                         
                         if opponent_count == m-1:
                             opponent_seq_score += 5
@@ -281,7 +285,7 @@ class Board:
                 #                 opponent_num_empty_seq += 1
                             
         # print(f"player_seq_score: {player_seq_score}, opponent_seq_score: {opponent_seq_score}")
-        return 5*(player_seq_score - opponent_seq_score) + (player_num_empty_seq - opponent_num_empty_seq)
+        return 10*(player_seq_score - opponent_seq_score) + (player_num_empty_seq - opponent_num_empty_seq) + (win_score_player - win_score_opponent)
         
 
     def evaluate(self):
