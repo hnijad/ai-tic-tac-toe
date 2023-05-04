@@ -59,8 +59,8 @@ class Board:
         return board_str
 
 
-    def evaluate_new(self, depth, mark):
-        side = mark
+    def evaluate_new(self, depth):
+        side = self.get_opponent_mark()
         opponent = 'X' if side == 'O' else 'O'
         n = self.size
         m = self.target
@@ -74,13 +74,14 @@ class Board:
         for i in range(n):
             for j in range(n):
                                     
-                
+                if not any('-' in row for row in grid):
+                    return 0
                 # Check rows
                 if j <= n - m:
                     
                     next_seq = [grid[i][j+k] for k in range(m)]
                     
-                    if grid[i][j] == side and opponent not in next_seq:
+                    if opponent not in next_seq:
                         count_side = next_seq.count(side)
                         player_seq_score += count_side
                         
@@ -94,7 +95,7 @@ class Board:
                         if next_seq.count('-') == m-1:
                             player_num_empty_seq += 1
                             
-                    elif grid[i][j] == opponent and side not in next_seq:
+                    elif side not in next_seq:
                         opponent_count = next_seq.count(opponent)
                         opponent_seq_score += opponent_count
                         
@@ -123,7 +124,7 @@ class Board:
                     
                     next_seq = [grid[i+k][j] for k in range(m)]
                     
-                    if grid[i][j] == side and opponent not in next_seq:
+                    if opponent not in next_seq:
                         count_side = next_seq.count(side)
                         player_seq_score += count_side
                         
@@ -137,7 +138,7 @@ class Board:
                         if next_seq.count('-') == m-1:
                             player_num_empty_seq += 1
                     
-                    elif grid[i][j] == opponent and side not in next_seq:
+                    elif side not in next_seq:
                         opponent_count = next_seq.count(opponent)
                         opponent_seq_score += opponent_count
                         
@@ -177,7 +178,7 @@ class Board:
                 if i <= n - m and j <= n - m:
                     next_seq = [grid[i+k][j+k] for k in range(m)]
                     
-                    if grid[i][j] == side and opponent not in next_seq:
+                    if opponent not in next_seq:
                         count_side = next_seq.count(side)
                         player_seq_score += count_side
                         
@@ -190,7 +191,7 @@ class Board:
                         if next_seq.count('-') == m-1:
                             player_num_empty_seq += 1
                             
-                    elif grid[i][j] == opponent and side not in next_seq:
+                    elif side not in next_seq:
                         opponent_count = next_seq.count(opponent)
                         opponent_seq_score += opponent_count
                         
@@ -230,7 +231,7 @@ class Board:
                 if i >= m-1 and j <= n - m:
                     next_seq = [grid[i-k][j+k] for k in range(m)]
                 
-                    if grid[i][j] == side and opponent not in next_seq:
+                    if opponent not in next_seq:
                         count_side = next_seq.count(side)
                         player_seq_score += count_side
                         
@@ -244,7 +245,7 @@ class Board:
                         if next_seq.count('-') == m-1:
                             player_num_empty_seq += 1
                             
-                    elif grid[i][j] == opponent and side not in next_seq:
+                    elif side not in next_seq:
                         opponent_count = next_seq.count(opponent)
                         opponent_seq_score += opponent_count
                         
