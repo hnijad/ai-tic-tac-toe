@@ -58,6 +58,164 @@ class Board:
             board_str += "|".join(row) + "\n"
         return board_str
 
+    def evaluate_new_human(self, depth):
+        side = self.get_opponent_mark()
+        # side = 'X'
+        opponent = 'X' if side == 'O' else 'O'
+        n = self.size
+        m = self.target
+        grid = self.state
+        
+        player_num_empty_seq = 0
+        opponent_num_empty_seq = 0
+        player_seq_score = 0
+        opponent_seq_score = 0
+        
+        win_score_player = 0
+        win_score_opponent = 0
+        win_score = 1000
+        
+        for i in range(n):
+            for j in range(n):
+                                    
+                if not any('-' in row for row in grid):
+                    return 0
+                # Check rows
+                if j <= n - m:
+                    
+                    next_seq = [grid[i][j+k] for k in range(m)]
+                    
+                    if opponent not in next_seq:
+                        count_side = next_seq.count(side)
+                        player_seq_score += count_side
+                        
+                        # check if player wins
+                        if count_side == m:
+                            win_score_player += win_score - depth
+                            
+                        # if count_side == m-1:
+                        #     player_num_empty_seq += 5
+                        
+                        if next_seq.count('-') == m-1:
+                            player_num_empty_seq += 1
+                            
+                    elif side not in next_seq:
+                        opponent_count = next_seq.count(opponent)
+                        opponent_seq_score += opponent_count**2
+                        
+                        if opponent_count == m:
+                            win_score_opponent += win_score - depth
+                        
+                        # if opponent_count == m-1:
+                        #     opponent_count += 5
+                        
+                        if next_seq.count('-') == m-1:
+                            opponent_num_empty_seq += 1
+                        
+      
+                        
+                # Check columns
+                if i <= n - m:
+                    
+                    next_seq = [grid[i+k][j] for k in range(m)]
+                    
+                    if opponent not in next_seq:
+                        count_side = next_seq.count(side)
+                        player_seq_score += count_side
+                        
+                        # check if player wins
+                        if count_side == m:
+                            win_score_player += win_score - depth
+                        
+                        # if count_side == m-1:
+                        #     player_num_empty_seq += 5
+                        
+                        if next_seq.count('-') == m-1:
+                            player_num_empty_seq += 1
+                    
+                    elif side not in next_seq:
+                        opponent_count = next_seq.count(opponent)
+                        opponent_seq_score += opponent_count**2
+                        
+                        if opponent_count == m:
+                            win_score_opponent += win_score - depth
+                        
+                        # if opponent_count == m-1:
+                        #     opponent_count += 5
+                            
+                        if next_seq.count('-') == m-1:
+                            opponent_num_empty_seq += 1
+                    
+                        
+                # Check diagonal (top-left to bottom-right)
+                if i <= n - m and j <= n - m:
+                    next_seq = [grid[i+k][j+k] for k in range(m)]
+                    
+                    if opponent not in next_seq:
+                        count_side = next_seq.count(side)
+                        player_seq_score += count_side
+                        
+                        # check if player wins
+                        if count_side == m:
+                            win_score_player += win_score - depth
+                        
+                        # if count_side == m-1:
+                        #     player_seq_score += 5
+                            
+                        if next_seq.count('-') == m-1:
+                            player_num_empty_seq += 1
+                            
+                    elif side not in next_seq:
+                        opponent_count = next_seq.count(opponent)
+                        opponent_seq_score += opponent_count**2
+                        
+                        if opponent_count == m:
+                            win_score_opponent += win_score - depth
+                        
+                        # if opponent_count == m-1:
+                        #     opponent_seq_score += 5
+                        
+                        if next_seq.count('-') == m-1:
+                            opponent_num_empty_seq += 1
+                            
+                  
+                # Check diagonal (bottom-left to top-right)                
+                if i >= m-1 and j <= n - m:
+                    next_seq = [grid[i-k][j+k] for k in range(m)]
+                
+                    if opponent not in next_seq:
+                        count_side = next_seq.count(side)
+                        player_seq_score += count_side
+                        
+                        # check if player wins
+                        if count_side == m:
+                            win_score_player += win_score - depth
+                        
+                        # if count_side == m-1:
+                        #     player_seq_score += 5
+                        
+                        if next_seq.count('-') == m-1:
+                            player_num_empty_seq += 1
+                            
+                    elif side not in next_seq:
+                        opponent_count = next_seq.count(opponent)
+                        opponent_seq_score += opponent_count**2
+                        
+                        if opponent_count == m:
+                            win_score_opponent += win_score - depth
+                        
+                        # if opponent_count == m-1:
+                        #     opponent_seq_score += 5
+                        
+                        if next_seq.count('-') == m-1:
+                            opponent_num_empty_seq += 1
+            
+                            
+        # print(f"player_seq_score: {player_seq_score}, opponent_seq_score: {opponent_seq_score}")
+        # score = 10*(player_seq_score - opponent_seq_score) + (player_num_empty_seq - opponent_num_empty_seq) + (win_score_player - win_score_opponent)
+        # return score if self.get_mark() == side else -score
+        return 5*(player_seq_score - opponent_seq_score) + (2 * player_num_empty_seq - opponent_num_empty_seq) + (2*win_score_player - win_score_opponent)
+    
     
     def evaluate_new(self, depth):
         # side = self.get_mark()
@@ -102,7 +260,7 @@ class Board:
                             
                     elif side not in next_seq:
                         opponent_count = next_seq.count(opponent)
-                        opponent_seq_score += opponent_count
+                        opponent_seq_score += opponent_count**2
                         
                         if opponent_count == m:
                             win_score_opponent += win_score - depth
@@ -113,16 +271,7 @@ class Board:
                         if next_seq.count('-') == m-1:
                             opponent_num_empty_seq += 1
                         
-                    
-                    # if grid[i][j] == side:
-                    #     if opponent not in next_seq:
-                    #         player_seq_score += next_seq.count(side)
-                    #     # seq = [(grid[i][j+k] == '-' or grid[i][j+k] == side) for k in range(m)]
-                    #     # player_seq_score += sum(seq)
-                    # elif grid[i][j] == opponent:
-                    #     seq = [(grid[i][j+k] == '-' or grid[i][j+k] == opponent) for k in range(m)]
-                    #     opponent_seq_score += sum(seq)
-        
+      
                         
                 # Check columns
                 if i <= n - m:
@@ -145,7 +294,7 @@ class Board:
                     
                     elif side not in next_seq:
                         opponent_count = next_seq.count(opponent)
-                        opponent_seq_score += opponent_count
+                        opponent_seq_score += opponent_count**2
                         
                         if opponent_count == m:
                             win_score_opponent += win_score - depth
@@ -156,28 +305,6 @@ class Board:
                         if next_seq.count('-') == m-1:
                             opponent_num_empty_seq += 1
                     
-                    # side_score_col = [grid[i+k][j] == side for k in range(m)]
-                    # if sum(side_score_col) == m:
-                    #     return 1000 - depth
-                    
-                    # opponent_score_col = [grid[i+k][j] == opponent for k in range(m)]
-                    # if sum(opponent_score_col) == m:
-                    #     return -1000 + depth
-                    
-                    # if grid[i][j] == side:
-                    #     seq = [(grid[i+k][j] == '-' or grid[i+k][j] == side) for k in range(m)]
-                    #     player_seq_score += sum(seq)
-                    # elif grid[i][j] == opponent:
-                    #     seq = [(grid[i+k][j] == '-' or grid[i+k][j] == opponent) for k in range(m)]
-                    #     opponent_seq_score += sum(seq)
-                    # else:
-                    #     empty_seq = [grid[i+k][j] == '-' for k in range(m)]
-                    #     if sum(empty_seq) == m-1:
-                    #         if grid[i][j] == side:
-                    #             player_num_empty_seq += 1
-                    #         elif grid[i][j] == opponent:
-                    #             opponent_num_empty_seq += 1
-                        
                         
                 # Check diagonal (top-left to bottom-right)
                 if i <= n - m and j <= n - m:
@@ -199,7 +326,7 @@ class Board:
                             
                     elif side not in next_seq:
                         opponent_count = next_seq.count(opponent)
-                        opponent_seq_score += opponent_count
+                        opponent_seq_score += opponent_count**2
                         
                         if opponent_count == m:
                             win_score_opponent += win_score - depth
@@ -210,29 +337,7 @@ class Board:
                         if next_seq.count('-') == m-1:
                             opponent_num_empty_seq += 1
                             
-                    
-                    # side_score_diag_tl_br = [grid[i+k][j+k] == side for k in range(m)]
-                    # if sum(side_score_diag_tl_br) == m:
-                    #     return 1000 - depth
-                    
-                    # opponent_score_diag_tl_br = [grid[i+k][j+k] == opponent for k in range(m)]
-                    # if sum(opponent_score_diag_tl_br) == m:
-                    #     return -1000 + depth
-                    
-                    # if grid[i][j] == side:
-                    #     seq = [(grid[i+k][j+k] == '-' or grid[i+k][j+k] == side) for k in range(m)]
-                    #     player_seq_score += sum(seq)
-                    # elif grid[i][j] == opponent:
-                    #     seq = [(grid[i+k][j+k] == '-' or grid[i+k][j+k] == opponent) for k in range(m)]
-                    #     opponent_seq_score += sum(seq)
-                    # else:
-                    #     empty_seq = [grid[i+k][j+k] == '-' for k in range(m)]
-                    #     if sum(empty_seq) == m-1:
-                    #         if grid[i][j] == side:
-                    #             player_num_empty_seq += 1
-                    #         elif grid[i][j] == opponent:
-                    #             opponent_num_empty_seq += 1
-                        
+                  
                 # Check diagonal (bottom-left to top-right)                
                 if i >= m-1 and j <= n - m:
                     next_seq = [grid[i-k][j+k] for k in range(m)]
@@ -253,7 +358,7 @@ class Board:
                             
                     elif side not in next_seq:
                         opponent_count = next_seq.count(opponent)
-                        opponent_seq_score += opponent_count
+                        opponent_seq_score += opponent_count**2
                         
                         if opponent_count == m:
                             win_score_opponent += win_score - depth
@@ -263,29 +368,7 @@ class Board:
                         
                         if next_seq.count('-') == m-1:
                             opponent_num_empty_seq += 1
-                #     side_score_diag_bl_tr = [grid[i-k][j+k] == side for k in range(m)]
-                #     if sum(side_score_diag_bl_tr) == m:
-                #         return 1000 - depth
-                    
-                #     opponent_score_diag_bl_tr = [grid[i-k][j+k] == opponent for k in range(m)]
-                #     if sum(opponent_score_diag_bl_tr) == m:
-                #         return -1000 + depth
-
-                #     if grid[i][j] == side:
-                        
-                #         seq = [(grid[i-k][j+k] == '-' or grid[i-k][j+k] == side) for k in range(m)]
-                #         player_seq_score += sum(seq)
-                #     elif grid[i][j] == opponent:
-                #         seq = [(grid[i-k][j+k] == '-' or grid[i-k][j+k] == opponent) for k in range(m)]
-                #         opponent_seq_score += sum(seq)
-                #     else: 
-                #         empty_seq = [grid[i-k][j+k] == '-' for k in range(m)]
-                #         if sum(empty_seq) == m-1:
-                #             if grid[i][j] == side:
-                #                 player_num_empty_seq += 1
-                #             elif grid[i][j] == opponent:
-                #                 opponent_num_empty_seq += 1
-                            
+            
         # print(f"player_seq_score: {player_seq_score}, opponent_seq_score: {opponent_seq_score}")
         score = 10*(player_seq_score - opponent_seq_score) + (player_num_empty_seq - opponent_num_empty_seq) + (win_score_player - win_score_opponent)
         return score if self.get_mark() == side else -score
