@@ -58,9 +58,10 @@ class Board:
             board_str += "|".join(row) + "\n"
         return board_str
 
-
+    
     def evaluate_new(self, depth):
-        side = self.get_opponent_mark()
+        side = self.get_mark()
+        # side = 'X'
         opponent = 'X' if side == 'O' else 'O'
         n = self.size
         m = self.target
@@ -93,8 +94,8 @@ class Board:
                         if count_side == m:
                             win_score_player += win_score - depth
                             
-                        if count_side == m-1:
-                            player_num_empty_seq += 5
+                        # if count_side == m-1:
+                        #     player_num_empty_seq += 5
                         
                         if next_seq.count('-') == m-1:
                             player_num_empty_seq += 1
@@ -104,10 +105,10 @@ class Board:
                         opponent_seq_score += opponent_count
                         
                         if opponent_count == m:
-                            win_score_opponent += -win_score + depth
+                            win_score_opponent += win_score - depth
                         
-                        if opponent_count == m-1:
-                            opponent_count += 5
+                        # if opponent_count == m-1:
+                        #     opponent_count += 5
                         
                         if next_seq.count('-') == m-1:
                             opponent_num_empty_seq += 1
@@ -136,8 +137,8 @@ class Board:
                         if count_side == m:
                             win_score_player += win_score - depth
                         
-                        if count_side == m-1:
-                            player_num_empty_seq += 5
+                        # if count_side == m-1:
+                        #     player_num_empty_seq += 5
                         
                         if next_seq.count('-') == m-1:
                             player_num_empty_seq += 1
@@ -147,10 +148,10 @@ class Board:
                         opponent_seq_score += opponent_count
                         
                         if opponent_count == m:
-                            win_score_opponent += -win_score + depth
+                            win_score_opponent += win_score - depth
                         
-                        if opponent_count == m-1:
-                            opponent_count += 5
+                        # if opponent_count == m-1:
+                        #     opponent_count += 5
                             
                         if next_seq.count('-') == m-1:
                             opponent_num_empty_seq += 1
@@ -189,8 +190,9 @@ class Board:
                         # check if player wins
                         if count_side == m:
                             win_score_player += win_score - depth
-                        if count_side == m-1:
-                            player_seq_score += 5
+                        
+                        # if count_side == m-1:
+                        #     player_seq_score += 5
                             
                         if next_seq.count('-') == m-1:
                             player_num_empty_seq += 1
@@ -200,10 +202,10 @@ class Board:
                         opponent_seq_score += opponent_count
                         
                         if opponent_count == m:
-                            win_score_opponent += -win_score + depth
+                            win_score_opponent += win_score - depth
                         
-                        if opponent_count == m-1:
-                            opponent_seq_score += 5
+                        # if opponent_count == m-1:
+                        #     opponent_seq_score += 5
                         
                         if next_seq.count('-') == m-1:
                             opponent_num_empty_seq += 1
@@ -243,8 +245,8 @@ class Board:
                         if count_side == m:
                             win_score_player += win_score - depth
                         
-                        if count_side == m-1:
-                            player_seq_score += 5
+                        # if count_side == m-1:
+                        #     player_seq_score += 5
                         
                         if next_seq.count('-') == m-1:
                             player_num_empty_seq += 1
@@ -254,10 +256,10 @@ class Board:
                         opponent_seq_score += opponent_count
                         
                         if opponent_count == m:
-                            win_score_opponent += -win_score + depth
+                            win_score_opponent += win_score - depth
                         
-                        if opponent_count == m-1:
-                            opponent_seq_score += 5
+                        # if opponent_count == m-1:
+                        #     opponent_seq_score += 5
                         
                         if next_seq.count('-') == m-1:
                             opponent_num_empty_seq += 1
@@ -285,7 +287,9 @@ class Board:
                 #                 opponent_num_empty_seq += 1
                             
         # print(f"player_seq_score: {player_seq_score}, opponent_seq_score: {opponent_seq_score}")
-        return 10*(player_seq_score - opponent_seq_score) + (player_num_empty_seq - opponent_num_empty_seq) + (win_score_player - win_score_opponent)
+        score = 10*(player_seq_score - opponent_seq_score) + (player_num_empty_seq - opponent_num_empty_seq) + (win_score_player - win_score_opponent)
+        return score if self.get_mark() == 'X' else -score
+        # return 10*(player_seq_score - opponent_seq_score) + (player_num_empty_seq - opponent_num_empty_seq) + (win_score_player - win_score_opponent)
         
 
     def evaluate(self):

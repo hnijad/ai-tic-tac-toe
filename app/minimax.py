@@ -17,8 +17,8 @@ def minimax(board: Board, cur_depth, depth_limit, is_max, mark, alpha, beta):
     if is_max:
         v = float('-inf')
         for i, j in moves:
-            board.make_move(i, j, mark)
-            res = minimax(board, cur_depth + 1, depth_limit, not is_max, board.get_mark(), alpha, beta)
+            board.make_move(i, j, board.get_mark())
+            res = minimax(board, cur_depth + 1, depth_limit, not is_max, board.get_opponent_mark(), alpha, beta)
             board.reset_move(i, j)
             v = max(v, res)
             alpha = max(alpha, res)
@@ -30,8 +30,8 @@ def minimax(board: Board, cur_depth, depth_limit, is_max, mark, alpha, beta):
     else:
         v = float('inf')
         for i, j in moves:
-            board.make_move(i, j, mark)
-            res = minimax(board, cur_depth + 1, depth_limit, not is_max, board.get_opponent_mark(), alpha, beta)
+            board.make_move(i, j, board.get_opponent_mark())
+            res = minimax(board, cur_depth + 1, depth_limit, not is_max, board.get_mark(), alpha, beta)
             board.reset_move(i, j)
             v = min(v, res)
             beta = min(beta, res)
@@ -62,7 +62,7 @@ def find_best_move(board: Board, side):
     x, y = -1, -1
     for i, j in moves:
         board.make_move(i, j, side)
-        score = minimax(board, 0, depth, False, board.get_mark(), float('-inf'), float('+inf'))
+        score = minimax(board, 0, depth, False, board.get_opponent_mark(), float('-inf'), float('+inf'))
         board.reset_move(i, j)
         if score > best_score:
             best_score = score
