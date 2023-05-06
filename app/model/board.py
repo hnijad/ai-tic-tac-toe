@@ -370,7 +370,7 @@ class Board:
                             opponent_num_empty_seq += 1
             
         # print(f"player_seq_score: {player_seq_score}, opponent_seq_score: {opponent_seq_score}")
-        score = 10*(player_seq_score - opponent_seq_score) + (player_num_empty_seq - opponent_num_empty_seq) + (win_score_player - win_score_opponent)
+        score = 10*(player_seq_score - 2 * opponent_seq_score) + 3 * (player_num_empty_seq - 2 * opponent_num_empty_seq) + (win_score_player - win_score_opponent)
         return score if self.get_mark() == side else -score
         # return 10*(player_seq_score - opponent_seq_score) + (player_num_empty_seq - opponent_num_empty_seq) + (win_score_player - win_score_opponent)
         
