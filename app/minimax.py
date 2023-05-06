@@ -17,7 +17,7 @@ def minimax(board: Board, cur_depth, depth_limit, is_max, mark, alpha, beta):
     if is_max:
         v = float('-inf')
         for i, j in moves:
-            board.make_move(i, j, board.get_mark())
+            board.make_move(i, j, mark)
             res = minimax(board, cur_depth + 1, depth_limit, not is_max, board.get_opponent_mark(), alpha, beta)
             board.reset_move(i, j)
             v = max(v, res)
@@ -30,7 +30,7 @@ def minimax(board: Board, cur_depth, depth_limit, is_max, mark, alpha, beta):
     else:
         v = float('inf')
         for i, j in moves:
-            board.make_move(i, j, board.get_opponent_mark())
+            board.make_move(i, j, mark)
             res = minimax(board, cur_depth + 1, depth_limit, not is_max, board.get_mark(), alpha, beta)
             board.reset_move(i, j)
             v = min(v, res)
@@ -46,7 +46,7 @@ def find_best_move(board: Board, side):
     seq = [board.state[i][j] for i in range(board.size) for j in range(board.size)]
     num_empty = seq.count("-")
     print("Number of empty cells:", num_empty)
-    if num_empty == board.size ** 2 - 1:
+    if num_empty == board.size ** 2 - 1 or num_empty == board.size ** 2:
         
         x, y = board.size // 2, board.size // 2
         if board.state[x][y] == "-":

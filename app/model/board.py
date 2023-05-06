@@ -60,8 +60,8 @@ class Board:
 
     
     def evaluate_new(self, depth):
-        side = self.get_mark()
-        # side = 'X'
+        # side = self.get_mark()
+        side = 'X'
         opponent = 'X' if side == 'O' else 'O'
         n = self.size
         m = self.target
@@ -288,7 +288,7 @@ class Board:
                             
         # print(f"player_seq_score: {player_seq_score}, opponent_seq_score: {opponent_seq_score}")
         score = 10*(player_seq_score - opponent_seq_score) + (player_num_empty_seq - opponent_num_empty_seq) + (win_score_player - win_score_opponent)
-        return score if self.get_mark() == 'X' else -score
+        return score if self.get_mark() == side else -score
         # return 10*(player_seq_score - opponent_seq_score) + (player_num_empty_seq - opponent_num_empty_seq) + (win_score_player - win_score_opponent)
         
 
