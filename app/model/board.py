@@ -73,7 +73,7 @@ class Board:
         
         win_score_player = 0
         win_score_opponent = 0
-        win_score = 100
+        win_score = 1000
         
         for i in range(n):
             for j in range(n):
@@ -370,7 +370,7 @@ class Board:
                         #    opponent_num_empty_seq += 1
                   
         # print(f"player_seq_score: {player_seq_score}, opponent_seq_score: {opponent_seq_score}")
-        score = 5*(player_seq_score - 3*opponent_seq_score) + 3*(player_num_empty_seq - 2*opponent_num_empty_seq) + (win_score_player - 2*win_score_opponent)
+        score = 10*(player_seq_score - 3 * opponent_seq_score) + (win_score_player - 2 *win_score_opponent)
         return score if self.get_mark() == side else -score
         # return 10*(player_seq_score - opponent_seq_score) + (player_num_empty_seq - opponent_num_empty_seq) + (win_score_player - win_score_opponent)
         
