@@ -75,31 +75,54 @@ def find_best_move(board: Board, side):
 
 def human():
     board_size, target = map(int, input("Enter board_size and target: ").split())
-
-    board = Board(board_size, target, 2)
+    turn = input("Who goes first? Bot(B) or Player(P): ")
+    possible_turns = ['B', 'P']
+    if turn not in possible_turns:
+        raise ValueError("Invalid turn")
+    
+    turn = 2 if turn == 'B' else 1
+    
+    board = Board(board_size, target, turn)
     player_mark = board.get_mark()
     print("Player mark:", player_mark)
     bot_mark = board.get_opponent_mark()
     print("Bot mark:", bot_mark)
 
     while not board.is_game_finished():
-        num1, num2 = map(int, input("Enter two space-separated integers: ").split())
         
+        if board.turn == 1:
         
-        board.make_move(num1, num2, player_mark)
+            num1, num2 = map(int, input("Enter two space-separated integers: ").split())
+            
+            
+            board.make_move(num1, num2, player_mark)
 
-        print(board)
-        # time.sleep(3)
+            print(board)
+            # time.sleep(3)
 
-        start_time = time.time()
-        x, y = find_best_move(board, bot_mark)
-        end_time = time.time()
-        elapsed_time = end_time - start_time
-        print(f"Elapsed time: {elapsed_time:.6f} seconds")
-        if x == -1:
-            sys.exit(0)
-        board.make_move(x, y, 'O')
-        print(board)
+            start_time = time.time()
+            x, y = find_best_move(board, bot_mark)
+            end_time = time.time()
+            elapsed_time = end_time - start_time
+            print(f"Elapsed time: {elapsed_time:.6f} seconds")
+            if x == -1:
+                sys.exit(0)
+            board.make_move(x, y, bot_mark)
+            print(board)
+        else:
+            start_time = time.time()
+            x, y = find_best_move(board, bot_mark)
+            end_time = time.time()
+            elapsed_time = end_time - start_time
+            print(f"Elapsed time: {elapsed_time:.6f} seconds")
+            if x == -1:
+                sys.exit(0)
+            board.make_move(x, y, bot_mark)
+            print(board)
+            
+            num1, num2 = map(int, input("Enter two space-separated integers: ").split())
+            board.make_move(num1, num2, player_mark)
+            print(board)
 
 
 def computer():

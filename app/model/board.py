@@ -73,7 +73,7 @@ class Board:
         
         win_score_player = 0
         win_score_opponent = 0
-        win_score = 1000
+        win_score = 20
         
         for i in range(n):
             for j in range(n):
@@ -101,7 +101,7 @@ class Board:
                             
                     elif side not in next_seq:
                         opponent_count = next_seq.count(opponent)
-                        opponent_seq_score += opponent_count**2
+                        opponent_seq_score += opponent_count
                         
                         if opponent_count == m:
                             win_score_opponent += win_score - depth
@@ -135,7 +135,7 @@ class Board:
                     
                     elif side not in next_seq:
                         opponent_count = next_seq.count(opponent)
-                        opponent_seq_score += opponent_count**2
+                        opponent_seq_score += opponent_count
                         
                         if opponent_count == m:
                             win_score_opponent += win_score - depth
@@ -167,7 +167,7 @@ class Board:
                             
                     elif side not in next_seq:
                         opponent_count = next_seq.count(opponent)
-                        opponent_seq_score += opponent_count**2
+                        opponent_seq_score += opponent_count
                         
                         if opponent_count == m:
                             win_score_opponent += win_score - depth
@@ -185,7 +185,7 @@ class Board:
                 
                     if opponent not in next_seq:
                         count_side = next_seq.count(side)
-                        player_seq_score += count_side
+                        player_seq_score += count_side**2
                         
                         # check if player wins
                         if count_side == m:
@@ -214,7 +214,7 @@ class Board:
         # print(f"player_seq_score: {player_seq_score}, opponent_seq_score: {opponent_seq_score}")
         # score = 10*(player_seq_score - opponent_seq_score) + (player_num_empty_seq - opponent_num_empty_seq) + (win_score_player - win_score_opponent)
         # return score if self.get_mark() == side else -score
-        return 5*(player_seq_score - opponent_seq_score) + (2 * player_num_empty_seq - opponent_num_empty_seq) + (2*win_score_player - win_score_opponent)
+        return 5*(player_seq_score - 3 * opponent_seq_score) + 3* (player_num_empty_seq - 2*opponent_num_empty_seq) + (win_score_player - 2*win_score_opponent)
     
     
     def evaluate_new(self, depth):
@@ -232,7 +232,7 @@ class Board:
         
         win_score_player = 0
         win_score_opponent = 0
-        win_score = 1000
+        win_score = 20
         
         for i in range(n):
             for j in range(n):
@@ -260,7 +260,7 @@ class Board:
                             
                     elif side not in next_seq:
                         opponent_count = next_seq.count(opponent)
-                        opponent_seq_score += opponent_count**2
+                        opponent_seq_score += opponent_count
                         
                         if opponent_count == m:
                             win_score_opponent += win_score - depth
@@ -294,7 +294,7 @@ class Board:
                     
                     elif side not in next_seq:
                         opponent_count = next_seq.count(opponent)
-                        opponent_seq_score += opponent_count**2
+                        opponent_seq_score += opponent_count
                         
                         if opponent_count == m:
                             win_score_opponent += win_score - depth
@@ -312,7 +312,7 @@ class Board:
                     
                     if opponent not in next_seq:
                         count_side = next_seq.count(side)
-                        player_seq_score += count_side
+                        player_seq_score += count_side**2
                         
                         # check if player wins
                         if count_side == m:
@@ -344,7 +344,7 @@ class Board:
                 
                     if opponent not in next_seq:
                         count_side = next_seq.count(side)
-                        player_seq_score += count_side
+                        player_seq_score += count_side**2
                         
                         # check if player wins
                         if count_side == m:
@@ -370,7 +370,7 @@ class Board:
                             opponent_num_empty_seq += 1
             
         # print(f"player_seq_score: {player_seq_score}, opponent_seq_score: {opponent_seq_score}")
-        score = 10*(player_seq_score - 2 * opponent_seq_score) + 3 * (player_num_empty_seq - 2 * opponent_num_empty_seq) + (win_score_player - win_score_opponent)
+        score = 5*(player_seq_score - 3*opponent_seq_score) + 3*(player_num_empty_seq - 2*opponent_num_empty_seq) + (win_score_player - 2*win_score_opponent)
         return score if self.get_mark() == side else -score
         # return 10*(player_seq_score - opponent_seq_score) + (player_num_empty_seq - opponent_num_empty_seq) + (win_score_player - win_score_opponent)
         
