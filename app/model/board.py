@@ -96,8 +96,8 @@ class Board:
                         # if count_side == m-1:
                         #     player_num_empty_seq += 5
                         
-                        if next_seq.count('-') == m-1:
-                            player_num_empty_seq += 1
+                       # if next_seq.count('-') == m-1:
+                        #    player_num_empty_seq += 1
                             
                     elif side not in next_seq:
                         opponent_count = next_seq.count(opponent)
@@ -109,8 +109,8 @@ class Board:
                         # if opponent_count == m-1:
                         #     opponent_count += 5
                         
-                        if next_seq.count('-') == m-1:
-                            opponent_num_empty_seq += 1
+                       # if next_seq.count('-') == m-1:
+                        #    opponent_num_empty_seq += 1
                         
       
                         
@@ -130,8 +130,8 @@ class Board:
                         # if count_side == m-1:
                         #     player_num_empty_seq += 5
                         
-                        if next_seq.count('-') == m-1:
-                            player_num_empty_seq += 1
+                       # if next_seq.count('-') == m-1:
+                        #    player_num_empty_seq += 1
                     
                     elif side not in next_seq:
                         opponent_count = next_seq.count(opponent)
@@ -143,8 +143,8 @@ class Board:
                         # if opponent_count == m-1:
                         #     opponent_count += 5
                             
-                        if next_seq.count('-') == m-1:
-                            opponent_num_empty_seq += 1
+                       # if next_seq.count('-') == m-1:
+                        #    opponent_num_empty_seq += 1
                     
                         
                 # Check diagonal (top-left to bottom-right)
@@ -162,8 +162,8 @@ class Board:
                         # if count_side == m-1:
                         #     player_seq_score += 5
                             
-                        if next_seq.count('-') == m-1:
-                            player_num_empty_seq += 1
+                       # if next_seq.count('-') == m-1:
+                        #    player_num_empty_seq += 1
                             
                     elif side not in next_seq:
                         opponent_count = next_seq.count(opponent)
@@ -175,8 +175,8 @@ class Board:
                         # if opponent_count == m-1:
                         #     opponent_seq_score += 5
                         
-                        if next_seq.count('-') == m-1:
-                            opponent_num_empty_seq += 1
+                       # if next_seq.count('-') == m-1:
+                        #    opponent_num_empty_seq += 1
                             
                   
                 # Check diagonal (bottom-left to top-right)                
@@ -194,8 +194,8 @@ class Board:
                         # if count_side == m-1:
                         #     player_seq_score += 5
                         
-                        if next_seq.count('-') == m-1:
-                            player_num_empty_seq += 1
+                       # if next_seq.count('-') == m-1:
+                        #    player_num_empty_seq += 1
                             
                     elif side not in next_seq:
                         opponent_count = next_seq.count(opponent)
@@ -207,14 +207,14 @@ class Board:
                         # if opponent_count == m-1:
                         #     opponent_seq_score += 5
                         
-                        if next_seq.count('-') == m-1:
-                            opponent_num_empty_seq += 1
+                       # if next_seq.count('-') == m-1:
+                        #    opponent_num_empty_seq += 1
             
                             
         # print(f"player_seq_score: {player_seq_score}, opponent_seq_score: {opponent_seq_score}")
         # score = 10*(player_seq_score - opponent_seq_score) + (player_num_empty_seq - opponent_num_empty_seq) + (win_score_player - win_score_opponent)
         # return score if self.get_mark() == side else -score
-        return 5*(player_seq_score - 3 * opponent_seq_score) + 3*(player_num_empty_seq - 2*opponent_num_empty_seq) + (win_score_player - win_score_opponent)
+        return 10*(player_seq_score - 3 * opponent_seq_score) + (win_score_player - 2 *win_score_opponent)
     
     
     def evaluate_new(self, depth):
@@ -232,7 +232,7 @@ class Board:
         
         win_score_player = 0
         win_score_opponent = 0
-        win_score = 100
+        win_score = 1000
         
         for i in range(n):
             for j in range(n):
@@ -255,8 +255,8 @@ class Board:
                         # if count_side == m-1:
                         #     player_num_empty_seq += 5
                         
-                        if next_seq.count('-') == m-1:
-                            player_num_empty_seq += 1
+                       # if next_seq.count('-') == m-1:
+                        #    player_num_empty_seq += 1
                             
                     elif side not in next_seq:
                         opponent_count = next_seq.count(opponent)
@@ -268,8 +268,8 @@ class Board:
                         # if opponent_count == m-1:
                         #     opponent_count += 5
                         
-                        if next_seq.count('-') == m-1:
-                            opponent_num_empty_seq += 1
+                       # if next_seq.count('-') == m-1:
+                        #    opponent_num_empty_seq += 1
                         
       
                         
@@ -289,8 +289,8 @@ class Board:
                         # if count_side == m-1:
                         #     player_num_empty_seq += 5
                         
-                        if next_seq.count('-') == m-1:
-                            player_num_empty_seq += 1
+                       # if next_seq.count('-') == m-1:
+                        #    player_num_empty_seq += 1
                     
                     elif side not in next_seq:
                         opponent_count = next_seq.count(opponent)
@@ -302,8 +302,8 @@ class Board:
                         # if opponent_count == m-1:
                         #     opponent_count += 5
                             
-                        if next_seq.count('-') == m-1:
-                            opponent_num_empty_seq += 1
+                       # if next_seq.count('-') == m-1:
+                        #    opponent_num_empty_seq += 1
                     
                         
                 # Check diagonal (top-left to bottom-right)
@@ -321,8 +321,8 @@ class Board:
                         # if count_side == m-1:
                         #     player_seq_score += 5
                             
-                        if next_seq.count('-') == m-1:
-                            player_num_empty_seq += 1
+                       # if next_seq.count('-') == m-1:
+                        #    player_num_empty_seq += 1
                             
                     elif side not in next_seq:
                         opponent_count = next_seq.count(opponent)
@@ -334,8 +334,8 @@ class Board:
                         # if opponent_count == m-1:
                         #     opponent_seq_score += 5
                         
-                        if next_seq.count('-') == m-1:
-                            opponent_num_empty_seq += 1
+                       # if next_seq.count('-') == m-1:
+                        #    opponent_num_empty_seq += 1
                             
                   
                 # Check diagonal (bottom-left to top-right)                
@@ -353,8 +353,8 @@ class Board:
                         # if count_side == m-1:
                         #     player_seq_score += 5
                         
-                        if next_seq.count('-') == m-1:
-                            player_num_empty_seq += 1
+                       # if next_seq.count('-') == m-1:
+                        #    player_num_empty_seq += 1
                             
                     elif side not in next_seq:
                         opponent_count = next_seq.count(opponent)
@@ -366,10 +366,9 @@ class Board:
                         # if opponent_count == m-1:
                         #     opponent_seq_score += 5
                         
-                        if next_seq.count('-') == m-1:
-                            opponent_num_empty_seq += 1
-            
-                            
+                       # if next_seq.count('-') == m-1:
+                        #    opponent_num_empty_seq += 1
+                  
         # print(f"player_seq_score: {player_seq_score}, opponent_seq_score: {opponent_seq_score}")
         score = 5*(player_seq_score - 3*opponent_seq_score) + 3*(player_num_empty_seq - 2*opponent_num_empty_seq) + (win_score_player - 2*win_score_opponent)
         return score if self.get_mark() == side else -score
